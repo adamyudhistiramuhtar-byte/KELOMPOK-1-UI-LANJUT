@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+root=$(git rev-parse --show-toplevel)
+existing=$(git config --local --get core.hooksPath || true)
+if [ -n "$existing" ] && [ "$existing" != .githooks ]; then
+  printf '%s\n' 'Existing hooksPath detected; inspect and migrate it before installation.' >&2
+  exit 1
+fi
+hooks=$(git rev-parse --git-path hooks)
+for name in pre-commit commit-msg pre-push; do
+  if [ -f "$hooks/$name" ]; then
+    printf '%s\n' "Existing $name hook detected; inspect and migrate it before installation." >&2
+    exit 1
+  fi
+done
+git config --local core.hooksPath .githooks
+printf '%s\n' 'Installed repository-local hooksPath: .githooks'

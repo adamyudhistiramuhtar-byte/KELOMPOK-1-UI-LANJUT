@@ -1,0 +1,53 @@
+name: Repository policy
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+    branches: [main]
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select trusted policy from base
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/trusted-policy"
+          if git cat-file -e "$BASE_SHA:scripts/policy.py" 2>/dev/null; then
+            for file in policy.py validate-pr.py legacy-commits.json; do
+              git show "$BASE_SHA:scripts/$file" > "$RUNNER_TEMP/trusted-policy/$file"
+            done
+          elif [ "$REPOSITORY" = 'adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT' ] && [ "$PR_NUMBER" = '40' ] && [ "$BASE_SHA" = '739a87211ef88ffa2132f5d5f69fc8d3aa23b842' ]; then
+            cp scripts/policy.py scripts/validate-pr.py scripts/legacy-commits.json "$RUNNER_TEMP/trusted-policy/"
+            echo 'Bootstrap PR #40 requires independent human review before adoption.'
+          else
+            echo 'Trusted base policy is unavailable; refusing unreviewed fallback.' >&2
+            exit 1
+          fi
+      - name: Validate branch, title and issue reference
+        env:
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 "$RUNNER_TEMP/trusted-policy/validate-pr.py"
+      - name: Validate all commits introduced by PR
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          base=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          issue=${PR_BRANCH#*/}; issue=${issue%%-*}
+          python3 "$RUNNER_TEMP/trusted-policy/policy.py" range "$base" "$HEAD_SHA" "$issue"

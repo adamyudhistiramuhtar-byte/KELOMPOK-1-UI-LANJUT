@@ -38,3 +38,7 @@ Unit atau functional, integration/API failure, responsif, usability, dan aksesib
 
 ## Contribution Guidelines
 Lihat [CONTRIBUTING](CONTRIBUTING.md); seluruh anggota berkontribusi pada produk dan memperbarui issue masing-masing.
+
+## Engineering governance
+
+See [CONTRIBUTING](CONTRIBUTING.md) and [developer onboarding](docs/engineering/developer-onboarding.md). Application setup, build and test commands are pending the agreed application foundation.

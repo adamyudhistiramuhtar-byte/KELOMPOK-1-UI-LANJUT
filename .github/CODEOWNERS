@@ -1,0 +1,11 @@
+# Existing repository paths only; a human reviewer other than the author is required.
+/.github/ @adamyudhistiramuhtar-byte @alexiusprst-tech
+/.githooks/ @adamyudhistiramuhtar-byte @alexiusprst-tech
+/scripts/ @adamyudhistiramuhtar-byte @alexiusprst-tech
+/tests/ @adamyudhistiramuhtar-byte @panjilaryan
+/CONTRIBUTING.md @adamyudhistiramuhtar-byte @alexiusprst-tech
+/docs/engineering/ @adamyudhistiramuhtar-byte @alexiusprst-tech
+/docs/DESIGN.md @sindirhmwti @alexiusprst-tech
+/docs/api-contract.md @panjilaryan @alexiusprst-tech
+/docs/component-architecture.md @alexiusprst-tech @panjilaryan
+/docs/SRS.md @adamyudhistiramuhtar-byte @panjilaryan

@@ -1,0 +1,15 @@
+{
+  "description": "Proposed one-time message migration; all content remains scanned. Subject to PR #40 review.",
+  "commits": {
+    "483d9c422a268fe39c652c482e7a6b40a149c9da": 1,
+    "1c7c36354f70d2d37dacda851c70ced35c916ca4": 1,
+    "16c612f7a50375e52c30c5b54bd8d943939f4408": 1,
+    "ad9092c2a0d13d3b5cd51f162c656914502b1808": 1,
+    "c6b39f63d180adb89cedbf6b888f67ef43690be0": 2,
+    "70703a3c448e0b3fc6f9e9ddebe68b5e2727e035": 2,
+    "6965f64bc55a487fb4419862159b8a7488901f70": 2,
+    "d585a80d6a20217f75cbdbb9fe055fff4477c1cf": 8,
+    "61053614dfd1dd6a5ee7550980e7b0abb5316ea6": 13,
+    "368cf93414ce60b0c346ab8cedfaf762677fece8": 13
+  }
+}

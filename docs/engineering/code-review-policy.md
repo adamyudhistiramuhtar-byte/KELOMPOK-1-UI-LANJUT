@@ -1,0 +1,3 @@
+# Code review policy
+
+An independent human peer reviews correctness, scope, requirements, architecture, security, privacy, accessibility, responsiveness, API handling, tests and documentation. Use BLOCKER, MAJOR, MINOR, SUGGESTION or QUESTION, explain impact and a concrete action, and request changes for blockers or major defects. Coordinate design, API and architectural changes with responsible owners. Do not approve your own PR. Resolve conversations before merging; a maintainer authorises integration only after relevant checks, dependency, acceptance criteria and Definition of Done are satisfied. Squash merge is proposed pending team agreement.
