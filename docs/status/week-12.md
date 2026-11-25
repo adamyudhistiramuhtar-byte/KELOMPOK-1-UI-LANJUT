@@ -25,10 +25,10 @@ Keputusan, PIC dan target: belum diisi.
 
 ## Format tindak lanjut
 
-Date / Actual Participants: belum dikonfirmasi.  
-Progress: hanya pekerjaan yang dapat ditautkan dan dibuktikan.  
-Planning / Problems / Decisions: belum diisi.  
-Follow-up action / PIC / target / evidence link: belum diisi.
+- Date / Actual Participants: belum dikonfirmasi.
+- Progress: hanya pekerjaan yang dapat ditautkan dan dibuktikan.
+- Planning / Problems / Decisions: belum diisi.
+- Follow-up action / PIC / target / evidence link: belum diisi.
 
 
 ## Checkpoint lanjutan
