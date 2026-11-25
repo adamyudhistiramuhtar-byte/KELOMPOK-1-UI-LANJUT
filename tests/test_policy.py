@@ -41,6 +41,31 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNotNone(policy.content_problem(b'<' * 7 + b' HEAD\n'))
         self.assertIsNone(policy.content_problem(b'API_URL=https://example.invalid\n'))
 
+    def test_pre_push_accepts_valid_branch(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            git(root, 'init', '-q', '-b', 'main')
+            git(root, 'config', 'user.name', 'Fixture')
+            git(root, 'config', 'user.email', 'fixture@example.invalid')
+            git(root, 'remote', 'add', 'origin', 'example')
+            (root / 'README.md').write_text('base\n')
+            git(root, 'add', 'README.md')
+            git(root, 'commit', '-qm', 'fixture base')
+            base = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            git(root, 'update-ref', 'refs/remotes/origin/main', base)
+            git(root, 'switch', '-qc', 'feature/8-test-valid')
+            (root / 'source.js').write_text('export const value = 1;\n')
+            git(root, 'add', 'source.js')
+            git(root, 'commit', '-qm', 'feat(home): add source\n\nRefs: #8')
+            head = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            ref = 'refs/heads/feature/8-test-valid'
+            previous = os.getcwd()
+            try:
+                os.chdir(root)
+                self.assertTrue(policy.pre_push('origin', 'example', f'{ref} {head} {ref} ' + '0' * 40 + '\n'))
+            finally:
+                os.chdir(previous)
+
     def test_unconfigured_application_fails_closed(self):
         with tempfile.TemporaryDirectory() as name:
             previous = os.getcwd()

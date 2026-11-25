@@ -1,6 +1,6 @@
 # Governance validation evidence — 25 November 2026
 
-Environment: isolated macOS checkout, Python 3.9.6, Git, temporary repositories and synthetic fixtures. `python3 -m unittest discover -s tests -v`: 8 tests passed, 0 failed. Syntax compilation passed after an initial sandbox denial for the macOS Python cache and a rerun with the required permission. No live credentials are used in test fixtures.
+Environment: isolated macOS checkout, Python 3.9.6, Git, temporary repositories and synthetic fixtures. `python3 -m unittest discover -s tests -v`: 9 tests passed, 0 failed. Syntax compilation passed after an initial sandbox denial for the macOS Python cache and a rerun with the required permission. An initial valid push was rejected because the hook parsed the issue number incorrectly; the parser was corrected and a valid-push fixture was added. No live credentials are used in test fixtures.
 
 | Scenario | Expected | Actual |
 | --- | --- | --- |

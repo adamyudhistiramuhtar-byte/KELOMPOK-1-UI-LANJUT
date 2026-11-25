@@ -173,7 +173,7 @@ def pre_push(remote, url, lines):
             base = run('git', 'merge-base', new, 'refs/remotes/origin/main').stdout.decode().strip()
         else:
             base = old
-        ok = commits(base, new, issue=remote_ref.split('/', 2)[-1].split('-', 1)[0]) and ok
+        ok = commits(base, new, issue=remote_ref[len('refs/heads/'):].split('/', 1)[1].split('-', 1)[0]) and ok
         checked.append(new)
     return ok and all(app_checks(ref) for ref in checked)
 
