@@ -41,3 +41,11 @@ Pemeriksaan Project: **13 issue baseline**, Todo 9, In Progress 2, In Review 2, 
 Draft ini disusun kembali dari hasil dokumentasi yang terdapat pada [PR #38](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/38). Commit `fc5242c20064003573df2884e8173a83a18f3280` memiliki author fixture yang keliru akibat environment pengujian Git yang tidak terisolasi. Perubahan dokumentasi disalin sebagai isi, bukan membawa commit tersebut; commit baru menggunakan identitas Adam yang diverifikasi. PR lama dan commit tersebut dipertahankan sebagai audit trail.
 
 Status persiapan: review dan retrospective belum dilaksanakan; increment #8 dan #12 masih diperlukan. Snapshot sebelumnya mencerminkan saat pemeriksaan masing-masing dan harus dihitung ulang sebelum ceremony.
+
+## Snapshot Project setelah pemulihan atribusi — 26 November 2026
+
+Pembacaan GitHub Project: 13 issue baseline; Todo 9, In Progress 2, In Review 2, Done 0, Blocked 2 (#8 dan #13). Selesai 0; tersisa 13; completion rate 0/13 = 0%. Blocked adalah field terpisah, bukan status. Issue #39 tetap di luar baseline sprint.
+
+- Atribusi #13 dipulihkan melalui [draft PR #41](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/41); PR #38 ditutup sebagai superseded dan dipertahankan sebagai audit trail.
+- Blocker yang tersisa untuk review increment adalah [#8](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/8) dan [#12](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/12); persiapan review tetap dapat dilanjutkan.
+- Status ini merupakan snapshot, bukan bukti ceremony, feedback, atau increment yang telah diterima.
