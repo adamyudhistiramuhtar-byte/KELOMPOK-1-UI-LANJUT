@@ -1,12 +1,12 @@
 # Governance validation evidence — 25 November 2026
 
-Environment: isolated macOS checkout, Python 3.9.6, Git, temporary repositories and synthetic fixtures. `python3 -m unittest discover -s tests -v`: 9 tests passed, 0 failed. Syntax compilation passed after an initial sandbox denial for the macOS Python cache and a rerun with the required permission. An initial valid push was rejected because the hook parsed the issue number incorrectly; the parser was corrected and a valid-push fixture was added. No live credentials are used in test fixtures.
+Environment: isolated macOS checkout, Python 3.9.6, Git, temporary repositories and synthetic fixtures. `python3 -m unittest discover -s tests -v`: 10 tests passed, 0 failed. Syntax compilation passed after an initial sandbox denial for the macOS Python cache and a rerun with the required permission. An initial valid push was rejected because the hook parsed the issue number incorrectly; the parser was corrected and a valid-push fixture was added. No live credentials are used in test fixtures.
 
 | Scenario | Expected | Actual |
 | --- | --- | --- |
 | Valid/invalid branch and commit | Accept valid, reject invalid or missing issue | Pass in unit tests |
 | Direct commit/push to main | Reject | Pass using local hooks and temporary bare remote |
-| Forbidden path and credential signatures | Reject without printing values | Pass in unit tests; fixture uses synthetic data |
+| Forbidden path and credential signatures | Reject without printing values | Pass with staged synthetic fixtures for private paths and credential signatures |
 | Valid SRS, token JSON, source, lockfile and environment example | Accept path | Pass in path checks; environment example committed in fixture |
 | File added then removed in later commit | Reject outgoing history | Pass in temporary history |
 | Invalid PR title and conflict marker | Reject | Pass in unit-level checks |

@@ -41,6 +41,34 @@ class PolicyTests(unittest.TestCase):
         self.assertIsNotNone(policy.content_problem(b'<' * 7 + b' HEAD\n'))
         self.assertIsNone(policy.content_problem(b'API_URL=https://example.invalid\n'))
 
+    def test_staged_private_paths_and_secret_are_rejected(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            git(root, 'init', '-q', '-b', 'main')
+            git(root, 'config', 'user.name', 'Fixture')
+            git(root, 'config', 'user.email', 'fixture@example.invalid')
+            (root / 'README.md').write_text('base\n')
+            git(root, 'add', 'README.md')
+            git(root, 'commit', '-qm', 'fixture base')
+            git(root, 'switch', '-qc', 'feature/8-private-fixture')
+            fixtures = {
+                '.cursor/rules/local.mdc': b'private fixture\n',
+                'notes.prompt.txt': b'private fixture\n',
+                'source.js': b'gh' + b'p_' + b'A' * 36,
+            }
+            previous = os.getcwd()
+            try:
+                os.chdir(root)
+                for path, data in fixtures.items():
+                    f = root / path
+                    f.parent.mkdir(parents=True, exist_ok=True)
+                    f.write_bytes(data)
+                    git(root, 'add', '-f', '--', path)
+                    self.assertFalse(policy.staged(), path)
+                    git(root, 'reset', '-q', '--', path)
+            finally:
+                os.chdir(previous)
+
     def test_pre_push_accepts_valid_branch(self):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)
