@@ -8,3 +8,6 @@ Sebelum issue dipilih untuk sprint:
 - [ ] Untuk UI: fondasi desain, token, komponen dan gate terkait tersedia serta disetujui.
 
 Status ini tidak otomatis mengubah komitmen sprint. Konfirmasi dilakukan saat planning/refinement.
+
+
+DoR adalah working agreement tambahan, bukan komitmen formal Scrum Guide. Sebelum implementasi, kontrak teknis harus tersedia; untuk UI gate desain dan persetujuan harus terpenuhi. Status Readiness adalah asesmen awal untuk refinement, bukan bukti persetujuan tim.

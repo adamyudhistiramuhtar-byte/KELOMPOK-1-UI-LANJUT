@@ -29,3 +29,8 @@ Date / Actual Participants: belum dikonfirmasi.
 Progress: hanya pekerjaan yang dapat ditautkan dan dibuktikan.  
 Planning / Problems / Decisions: belum diisi.  
 Follow-up action / PIC / target / evidence link: belum diisi.
+
+
+## Checkpoint lanjutan
+
+Tanggal, participants dan hasil aktual belum diketahui. Catat Sprint Goal progress, completed/current work, next actions, blockers, decisions, evidence, PIC dan target setelah ada bukti.

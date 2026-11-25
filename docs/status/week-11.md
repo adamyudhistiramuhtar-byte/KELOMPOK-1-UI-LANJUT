@@ -36,3 +36,8 @@ Follow-up action / PIC / target / evidence link: belum diisi.
 - Draft SRS, requirement dan RTM tersedia untuk diperiksa melalui [PR #35](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/35). Review dan approval belum terjadi.
 - Kontrak beranda yang terblokir tersedia pada [PR #37](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/37); tidak ada implementasi atau hasil uji UI.
 - Persiapan review/retrospective tersedia pada [PR #38](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/38); ceremony belum dilaksanakan.
+
+
+## Pemeriksaan operasional
+
+Enam akun telah diverifikasi sebagai collaborator repository; lihat Project dan issue untuk assignment aktual. Review PR #35 dan #36 diminta kepada collaborator yang ditentukan. Ini adalah bukti konfigurasi, bukan bukti bahwa meeting atau review telah berlangsung. Tindak lanjut, jam dan peserta masih menunggu konfirmasi.

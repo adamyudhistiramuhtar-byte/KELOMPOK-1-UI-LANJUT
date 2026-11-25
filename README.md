@@ -6,7 +6,7 @@
 Website portofolio responsif untuk mengenalkan enam anggota, kompetensi, karya, proyek, dan kontak profesional yang disetujui untuk publikasi. Mata kuliah Pengembangan UI Lanjut; Agile dengan Scrum yang diadaptasi.
 
 ## Team Members
-Adam Yudhistira Muhtar (Project Manager dan System Analyst), Alexius Pras, Sindi Rahmawati, Marza, Panji Laryan, Indra. Alokasi awal tersedia pada [team responsibilities](docs/team-responsibilities.md).
+Adam Yudhistira Muhtar (Project Manager dan System Analyst), Alexius Prasta Nugraha, Sindi Rahmawati, Marza, Panji Laryan, Muhammad Indra. Alokasi awal tersedia pada [team responsibilities](docs/team-responsibilities.md).
 
 ## Project Scope dan Functional Requirements
 Beranda `/` berisi hero, nilai, CTA Tim dan Proyek serta tautan teks proyek unggulan. `/team` menampilkan enam kartu; `/team/:id` profil, kompetensi dan 3–5 screenshot karya; `/projects` menampilkan minimal tiga proyek dengan search dan filter; `/projects/:id` memuat detail dan kontribusi; `/contact` memuat direktori kontak profesional yang disetujui. Detail: [requirements](docs/requirements.md), [SRS draft](docs/SRS.md).

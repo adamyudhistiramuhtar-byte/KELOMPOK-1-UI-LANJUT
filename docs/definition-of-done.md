@@ -9,3 +9,6 @@ Scope dan acceptance criteria terpenuhi, hasil diperiksa, pengujian relevan dan 
 ## Bukti tambahan dan alur
 
 Catat hasil uji aktual, bukti PR dan review, defect kritis, integrasi serta pembaruan Project. Peer review dan merge bila relevan diperlukan sebelum Done. Checklist ini adalah usulan sampai disepakati; tidak menjadi bukti bahwa suatu issue selesai.
+
+
+Definition of Done diterapkan konsisten pada increment: deliverable tersedia, tidak ada blocker yang mencegah penggunaannya, kriteria dan pengujian relevan terpenuhi serta bukti, peer review dan integrasi dicatat. Jangan mengubah Done hanya karena PR di-merge.
