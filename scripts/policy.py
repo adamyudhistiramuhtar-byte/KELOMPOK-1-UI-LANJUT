@@ -27,6 +27,13 @@ def run(*args, input_data=None, check=True):
     return result
 
 
+
+def author_ok(name, email):
+    name = name.strip()
+    email = email.strip().lower()
+    return bool(name and name.lower() != 'fixture' and '@' in email and not email.endswith(('.invalid', '.example', '.test')))
+
+
 def branch_ok(name):
     return bool(BRANCH.fullmatch(name))
 
@@ -135,6 +142,10 @@ def commits(base, head, check_messages=True, issue=None):
     legacy = json.loads(legacy_path.read_text(encoding='utf-8'))['commits']
     for commit in ids:
         message = run('git', 'show', '-s', '--format=%B', commit).stdout.decode('utf-8', 'replace')
+        author = run('git', 'show', '-s', '--format=%an%x00%ae', commit).stdout.rstrip(b'\n').split(b'\0', 1)
+        if len(author) != 2 or not author_ok(*(value.decode('utf-8', 'replace') for value in author)):
+            print('Invalid commit author:', commit[:12], file=sys.stderr)
+            ok = False
         if any(pattern.search(message.encode('utf-8')) for pattern in SECRET_PATTERNS):
             print('Possible credential in commit message:', commit[:12], file=sys.stderr)
             ok = False
@@ -247,7 +258,9 @@ def main(args):
         with open(args[1], encoding='utf-8') as f:
             message = f.read()
         branch = run('git', 'branch', '--show-current').stdout.decode().strip()
-        if not branch_ok(branch):
+        ident = run('git', 'var', 'GIT_AUTHOR_IDENT', check=False)
+        match = re.match(r'^(.+?) <([^>]+)> ', ident.stdout.decode('utf-8', 'replace')) if ident.returncode == 0 else None
+        if not branch_ok(branch) or not match or not author_ok(match.group(1), match.group(2)):
             return False
         issue = branch.split('/', 1)[1].split('-', 1)[0]
         normal = message_ok(message) and bool(re.search(r'(?mi)^Refs:\s*#' + re.escape(issue) + r'\s*$', message))

@@ -20,3 +20,7 @@ The checked-in allowlist is active only if the reviewed governance change is mer
 ## Documentation overlap
 
 A three-way comparison on 26 November 2026 between main, #36 and #40 found one conflict block each in README.md, CONTRIBUTING.md and .github/PULL_REQUEST_TEMPLATE.md. Integrate #40 only after peer approval, then merge main into #36 without force push; preserve the project/Scrum content and governance requirements, run checks, and obtain required re-review. No conflict was resolved before the chosen base change.
+
+## Attribution incident — #38
+
+Commit `fc5242c20064003573df2884e8173a83a18f3280` was created with an incorrect synthetic fixture author after a local test inherited Git environment variables. It is not on the legacy allowlist, and author validation correctly rejects it. The local fixture isolation was corrected and the temporary clone configuration restored. Do not merge this commit as-is or rewrite history/replace the PR without explicit authorization. A replacement branch/PR preserving the actual changes and truthful attribution is one possible action, subject to maintainer approval and coordination.
