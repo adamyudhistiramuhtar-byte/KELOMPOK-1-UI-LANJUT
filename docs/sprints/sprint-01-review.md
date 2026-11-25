@@ -21,3 +21,7 @@ Feedback stakeholder: belum ada.
 Tindak lanjut: belum diputuskan.  
 | Action | PIC | Target | Evidence | Status |
 | --- | --- | --- | --- | --- |
+
+## Snapshot setelah persiapan — 25 November 2026
+
+Hasil pembacaan GitHub Project setelah perubahan Adam: 13 issue, Todo 9, In Progress 2, In Review 2, Done 0, Blocked 1 (#8). Completed 0; remaining 13; completion rate 0/13 = 0%. Blocked merupakan field terpisah dan bukan status tambahan; #8 terhitung dalam In Progress. Snapshot ini belum merupakan hasil Sprint Review dan harus diperbarui menjelang ceremony.
