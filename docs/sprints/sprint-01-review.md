@@ -17,11 +17,21 @@ Catat daftar issue, status aktual, PR, hasil uji, pekerjaan lengkap, tidak lengk
 - [ ] Memeriksa acceptance criteria bersama stakeholder dan mencatat bukti.
 
 ## Feedback dan tindak lanjut
-Feedback stakeholder: belum ada.  
-Tindak lanjut: belum diputuskan.  
+Feedback stakeholder: belum ada.
+
+Tindak lanjut: belum diputuskan.
 | Action | PIC | Target | Evidence | Status |
 | --- | --- | --- | --- | --- |
 
 ## Snapshot setelah persiapan — 25 November 2026
 
 Hasil pembacaan GitHub Project setelah perubahan Adam: 13 issue, Todo 9, In Progress 2, In Review 2, Done 0, Blocked 1 (#8). Completed 0; remaining 13; completion rate 0/13 = 0%. Blocked merupakan field terpisah dan bukan status tambahan; #8 terhitung dalam In Progress. Snapshot ini belum merupakan hasil Sprint Review dan harus diperbarui menjelang ceremony.
+
+## Snapshot Project — 26 November 2026
+
+Pemeriksaan Project: **13 issue baseline**, Todo 9, In Progress 2, In Review 2, Done 0, Blocked 1 (#8). Completed 0, remaining 13; completion rate 0/13 = 0%. Blocked adalah field terpisah: #8 termasuk In Progress. Issue governance #39 berada di luar iteration dan tidak dihitung pada angka ini. Snapshot harus diperbarui saat review aktual.
+
+- Dalam review: [#1 / PR #35](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/35) dan [#2 / PR #36](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/36); belum ada approval pada saat audit.
+- Dalam pengerjaan: [#8 / PR #37](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/37) terblokir menunggu fondasi; [#13 / PR #38](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/38) baru tahap persiapan.
+- Dependency [#12](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/12) belum terintegrasi pada main dan tidak ditemukan branch atau PR terpisah saat audit.
+- Bukti uji website dan demonstrasi increment: belum tersedia; jangan memberi status pass. Feedback stakeholder, keputusan dan action retrospective tetap kosong sampai ceremony aktual.
