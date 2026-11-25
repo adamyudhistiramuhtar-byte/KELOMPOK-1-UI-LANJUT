@@ -21,3 +21,7 @@ Audit 13 issue dan urutan dependency: [dependency map](dependency-map.md). Sprin
 - Retrospective 6 Desember: apa yang baik, yang sulit, perbaikan dan action ber-PIC.
 
 Tidak ada kehadiran, diskusi atau persetujuan yang diasumsikan.
+
+## Verifikasi view Project
+
+Pada audit API 25 November 2026, Current Sprint berlayout board, filter `iteration:@current`, dan `verticalGroupByFields = Status`. Product Backlog adalah table; Roadmap adalah roadmap; Blocked Items dan Testing & Quality mempunyai filter. Team Workload masih tanpa pengelompokan. API yang tersedia membaca grouping tetapi input update view hanya menyediakan visible fields, bukan grouping; atur grouping lewat UI, misalnya berdasarkan Assignees. Karena lima username anggota belum terverifikasi, mayoritas issue masih unassigned. Kesesuaian rentang item pada tampilan roadmap perlu diperiksa melalui UI; tanggal iteration telah tersedia pada Project.
