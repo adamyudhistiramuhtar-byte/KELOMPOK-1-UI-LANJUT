@@ -116,7 +116,7 @@ Diagram di atas berupa sumber PlantUML; render visual belum diverifikasi.
 | Exceptional Flows | E-1 (langkah 2): ID proyek tidak valid: tampilkan pesan dan jalan kembali; alur berhenti atau pulih sesuai respons. |
 | Postconditions | Sukses: informasi/tujuan yang dipilih ditampilkan; gagal: informasi sukses tidak diklaim dan pengunjung menerima respons relevan. |
 | Business Rules | BR-01–BR-06 jika relevan; konten personal harus disetujui. |
-| FR Mapping | FR-12 |
+| FR Mapping | FR-12, FR-16 |
 | NFR Mapping | NFR-01, NFR-05, NFR-06, NFR-07 |
 | Sumber | Instruksi pengguna; belum disetujui tim. |
 

@@ -20,3 +20,18 @@ Skenario berikut belum dijalankan; hasil aktual hanya dicatat di [test-results](
 | TC-FR-14 | Pada /projects, sediakan status request dan respons dan jalankan skenario menampilkan status pengambilan data. | Tiap kondisi memunculkan state yang berbeda dan dapat dipahami. |
 | TC-FR-15 | Pada /projects, sediakan aktivasi retry dan jalankan skenario mengulangi request gagal. | Retry memicu request baru dan hasilnya ditampilkan. |
 | TC-FR-16 | Pada /team/:id; /projects/:id, sediakan aktivasi tautan kembali dan jalankan skenario mengembalikan pengunjung. | Tautan profil menuju /team dan tautan detail menuju /projects. |
+
+## Non-functional cases — NOT RUN
+
+| ID | Skenario | Hasil diharapkan |
+| --- | --- | --- |
+| TC-NFR-01 | Periksa usability pada Semua menggunakan metode pada NFR-01. | Label sesuai tujuan. |
+| TC-NFR-02 | Periksa performance pada Semua menggunakan metode pada NFR-02. | Target usulan belum disepakati. |
+| TC-NFR-03 | Periksa reliability pada /projects menggunakan metode pada NFR-03. | Error dan retry dapat diperiksa. |
+| TC-NFR-04 | Periksa compatibility pada Semua menggunakan metode pada NFR-04. | Browser dan versi disepakati lulus. |
+| TC-NFR-05 | Periksa responsiveness pada Semua menggunakan metode pada NFR-05. | Viewport dan zoom dapat digunakan. |
+| TC-NFR-06 | Periksa accessibility pada Semua menggunakan metode pada NFR-06. | Temuan aksesibilitas dicatat. |
+| TC-NFR-07 | Periksa privacy pada Tim/profil/kontak menggunakan metode pada NFR-07. | Hanya konten berizin ditampilkan. |
+| TC-NFR-08 | Periksa security pada Deployment menggunakan metode pada NFR-08. | Rahasia tidak terpapar dan HTTPS tersedia. |
+| TC-NFR-09 | Periksa maintainability pada Komponen menggunakan metode pada NFR-09. | Komponen/token didokumentasikan. |
+| TC-NFR-10 | Periksa testability pada Semua menggunakan metode pada NFR-10. | FR memiliki test case dan hasil aktual. |

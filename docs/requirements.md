@@ -176,7 +176,7 @@ Sumber: kebutuhan eksplisit pengguna dan issue GitHub; SRS-Kelompok-1-v0.1 dan p
 - Output: Halaman induk.
 - Kondisi pengecualian: Tujuan tidak tersedia: jangan klaim navigasi lulus.
 - Kriteria penerimaan: Tautan profil menuju /team dan tautan detail menuju /projects.
-- Sumber: instruksi produk pengguna; use case: UC-03; issue: #10, #19.
+- Sumber: instruksi produk pengguna; use case: UC-03 dan UC-05; issue: #10, #19.
 
 ## Non-functional requirements
 
