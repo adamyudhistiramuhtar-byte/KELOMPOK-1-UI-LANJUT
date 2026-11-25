@@ -13,6 +13,17 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+          fetch-depth: 0
+      - name: Prevent silent application removal
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if git cat-file -e "$BASE_SHA:package.json" 2>/dev/null && ! git cat-file -e "$HEAD_SHA:package.json" 2>/dev/null; then
+            echo 'Application manifest removal requires an explicitly reviewed governance change.' >&2
+            exit 1
+          fi
       - run: python3 -m unittest discover -s tests -v
       - name: Report application tooling status
         run: |

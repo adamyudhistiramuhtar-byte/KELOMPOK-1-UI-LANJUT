@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Shared Git policy checks. Never print matching secret content."""
 import fnmatch
+import json
+from pathlib import Path
 import os
 import re
+import shutil
 import subprocess
 import sys
 
@@ -11,7 +14,8 @@ SUBJECT = re.compile(r'^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|r
 ISSUE = re.compile(r'(?mi)^Refs:\s*#[1-9][0-9]*\s*$')
 PR = re.compile(r'^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)\([a-z0-9]+(?:-[a-z0-9]+)*\): [a-z][\x20-\x7e]* \(#[1-9][0-9]*\)$')
 PRIVATE_NAMES = {n.lower() for n in ('AGENTS.md AGENTS.local.md AGENTS.override.md AGENT.md CLAUDE.md CLAUDE.local.md GEMINI.md CODEX.md .cursorrules .windsurfrules .roomodes .clinerules .cursorignore .cursorindexingignore AGENT_RULES.md AGENT_INSTRUCTIONS.md AI_INSTRUCTIONS.md AI_RULES.md SYSTEM_PROMPT.md MASTER_PROMPT.md PROMPT.md PROMPTS.md AGENT_NOTES.md AI_NOTES.md .mcp.json mcp.json credentials.json secrets.json').split()}
-PRIVATE_DIRS = {n.lower() for n in ('.claude .codex .cursor .windsurf .gemini .continue .roo .cline .amazonq .kiro .augment .crush .opencode .mcp .ai .agent .agents .prompts prompts agent-output agent-logs ai-output ai-logs chat-logs conversation-history session-history local-notes .local').split()}
+PRIVATE_DIRS = {n.lower() for n in ('.claude .codex .cursor .windsurf .gemini .continue .roo .cline .amazonq .kiro .augment .crush .opencode .mcp').split()}
+ROOT_PRIVATE_DIRS = {n.lower() for n in ('.ai .agent .agents .prompts prompts agent-output agent-logs ai-output ai-logs chat-logs conversation-history session-history local-notes .local').split()}
 SECRET_PATTERNS = [re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'), re.compile(rb'gh[pousr]_[A-Za-z0-9]{30,}'), re.compile(rb'github_pat_[A-Za-z0-9_]{40,}'), re.compile(rb'AKIA[0-9A-Z]{16}'), re.compile(rb'(?i)(?:api[_-]?key|secret[_-]?key|access[_-]?token)\s*[:=]\s*[\x22\x27][A-Za-z0-9_\-/+=]{24,}[\x22\x27]')]
 CONFLICT = re.compile(rb'(?m)^(?:<{7}(?: |$)|={7}\s*$|>{7}(?: |$))')
 
@@ -65,7 +69,7 @@ def forbidden(path):
     name = parts[-1]
     if name in PRIVATE_NAMES or name.startswith('.aider'):
         return True
-    if any(x in PRIVATE_DIRS for x in parts[:-1]):
+    if any(x in PRIVATE_DIRS for x in parts[:-1]) or (len(parts) > 1 and parts[0] in ROOT_PRIVATE_DIRS):
         return True
     if path.startswith(('.github/instructions/', '.github/prompts/', '.github/agents/', '.github/skills/')) or path == '.github/copilot-instructions.md':
         return True
@@ -124,11 +128,20 @@ def commits(base, head, check_messages=True, issue=None):
     if not ids:
         raise RuntimeError('Empty commit range; nothing can be verified')
     ok = True
+    if run('git', 'diff', '--check', base, head, check=False).returncode:
+        print('Whitespace or conflict error in outgoing diff', file=sys.stderr)
+        ok = False
+    legacy_path = Path(__file__).with_name('legacy-commits.json')
+    legacy = json.loads(legacy_path.read_text(encoding='utf-8'))['commits']
     for commit in ids:
         message = run('git', 'show', '-s', '--format=%B', commit).stdout.decode('utf-8', 'replace')
+        if any(pattern.search(message.encode('utf-8')) for pattern in SECRET_PATTERNS):
+            print('Possible credential in commit message:', commit[:12], file=sys.stderr)
+            ok = False
         parents = run('git', 'show', '-s', '--format=%P', commit).stdout.split()
         normal = message_ok(message) and (not issue or bool(re.search(r'(?mi)^Refs:\s*#' + re.escape(issue) + r'\s*$', message)))
-        if check_messages and not (normal or generated_message_ok(message, len(parents), issue, allow_revert=True)):
+        legacy_match = issue is not None and str(legacy.get(commit, '')) == issue
+        if check_messages and not (normal or legacy_match or generated_message_ok(message, len(parents), issue, allow_revert=True)):
             print('Invalid commit message:', commit[:12], file=sys.stderr)
             ok = False
         changed = paths(run('git', 'diff-tree', '--root', '-m', '--no-commit-id', '--name-only', '-r', '-z', '--diff-filter=ACMR', commit).stdout)
@@ -140,12 +153,54 @@ def commits(base, head, check_messages=True, issue=None):
     return ok
 
 
-def app_checks(ref=None):
-    present = run('git', 'cat-file', '-e', ref + ':package.json', check=False).returncode == 0 if ref else os.path.exists('package.json')
-    if not present:
+def app_checks(ref=None, staged=False):
+    if staged:
+        manifest = run('git', 'show', ':package.json', check=False)
+    elif ref:
+        if run('git', 'cat-file', '-e', ref + '^{commit}', check=False).returncode:
+            raise RuntimeError('Outgoing commit cannot be inspected')
+        manifest = run('git', 'show', ref + ':package.json', check=False)
+    else:
+        if not os.path.exists('package.json'):
+            print('Application checks NOT RUN: package.json and agreed stack absent')
+            return True
+        manifest = None
+    if manifest is not None and manifest.returncode:
         print('Application checks NOT RUN: package.json and agreed stack absent')
         return True
-    raise RuntimeError('Application exists but agreed formatter, lint, test and build commands are not configured in governance policy')
+    data = manifest.stdout if manifest is not None else Path('package.json').read_bytes()
+    try:
+        config = json.loads(data)
+    except (ValueError, UnicodeDecodeError) as exc:
+        raise RuntimeError('Application manifest cannot be parsed') from exc
+    if not isinstance(config, dict):
+        raise RuntimeError('Application manifest must be an object')
+    scripts = config.get('scripts', {})
+    names = ['format:check', 'lint'] if staged else ['test', 'build']
+    if not staged and 'typecheck' in scripts:
+        names.append('typecheck')
+    if not isinstance(scripts, dict) or any(not isinstance(scripts.get(n), str) or not scripts[n].strip() for n in names):
+        raise RuntimeError('Required application scripts are not configured: ' + ', '.join(names))
+    if not Path('package.json').is_file() or Path('package.json').read_bytes() != data:
+        raise RuntimeError('Working manifest differs from the version being validated')
+    if run('git', 'diff', '--quiet', check=False).returncode:
+        raise RuntimeError('Tracked working files differ from the index; cannot validate staged content safely')
+    if ref and run('git', 'rev-parse', 'HEAD').stdout.decode().strip() != ref:
+        raise RuntimeError('Application checks require the outgoing commit to match the checked-out HEAD')
+    location = ':' if staged else ref + ':' if ref else ':'
+    locks = [('package-lock.json', 'npm'), ('pnpm-lock.yaml', 'pnpm'), ('yarn.lock', 'yarn')]
+    available = [(path, tool) for path, tool in locks if run('git', 'cat-file', '-e', location + path, check=False).returncode == 0]
+    if len(available) != 1:
+        raise RuntimeError('Exactly one committed package-manager lockfile is required')
+    tool = available[0][1]
+    if not shutil.which(tool):
+        raise RuntimeError('Required package manager is unavailable: ' + tool)
+    for name in names:
+        result = subprocess.run([tool, 'run', name], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode:
+            raise RuntimeError('Application check failed: ' + name)
+        print('Application check passed:', name)
+    return True
 
 
 def pre_push(remote, url, lines):
@@ -184,6 +239,8 @@ def main(args):
     command = args[0]
     if command == 'staged':
         return staged()
+    if command == 'application-staged':
+        return app_checks(staged=True)
     if command == 'branch':
         return branch_ok(args[1])
     if command == 'commit-message':

@@ -3,8 +3,4 @@ set -eu
 root=$(git rev-parse --show-toplevel)
 cd "$root"
 python3 scripts/policy.py staged
-if git cat-file -e :package.json 2>/dev/null; then
-  printf '%s\n' 'Application formatter and lint commands are not yet agreed; commit blocked.' >&2
-  exit 1
-fi
-printf '%s\n' 'Application format/lint NOT RUN: application foundation not available.'
+python3 scripts/policy.py application-staged

@@ -6,6 +6,11 @@ import sys
 import tempfile
 import unittest
 
+# Git invokes hooks with repository-specific environment variables; fixtures need isolation.
+for key in tuple(os.environ):
+    if key.startswith('GIT_'):
+        del os.environ[key]
+
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('policy', ROOT / 'scripts/policy.py')
 policy = importlib.util.module_from_spec(spec)
@@ -32,7 +37,7 @@ class PolicyTests(unittest.TestCase):
     def test_paths_are_specific_and_case_insensitive(self):
         for path in ('AGENTS.md', '.cursor/rules/file', 'notes.prompt.md', '.env', 'x/SECRET.PEM'):
             self.assertTrue(policy.forbidden(path), path)
-        for path in ('.env.example', 'docs/SRS.md', 'docs/design-tokens.json', 'src/model.js', 'package-lock.json', 'docs/engineering/engineering-standards.md'):
+        for path in ('.env.example', 'docs/SRS.md', 'docs/design-tokens.json', 'src/model.js', 'package-lock.json', 'docs/prompts/example.md', 'docs/engineering/engineering-standards.md'):
             self.assertFalse(policy.forbidden(path), path)
 
     def test_secrets_and_conflicts(self):
@@ -53,6 +58,8 @@ class PolicyTests(unittest.TestCase):
             git(root, 'switch', '-qc', 'feature/8-private-fixture')
             fixtures = {
                 '.cursor/rules/local.mdc': b'private fixture\n',
+                'nested path/AgEnTs.Md': b'private fixture\n',
+                'nested path/file with space.prompt.md': b'private fixture\n',
                 'notes.prompt.txt': b'private fixture\n',
                 'source.js': b'gh' + b'p_' + b'A' * 36,
             }
@@ -91,6 +98,106 @@ class PolicyTests(unittest.TestCase):
             try:
                 os.chdir(root)
                 self.assertTrue(policy.pre_push('origin', 'example', f'{ref} {head} {ref} ' + '0' * 40 + '\n'))
+                self.assertFalse(policy.commits(base, head, issue='9'))
+                with self.assertRaisesRegex(RuntimeError, 'Direct push'):
+                    policy.pre_push('origin', 'example', f'{ref} {head} {ref} ' + '0' * 40 + f'\nrefs/heads/main {head} refs/heads/main {base}\n')
+            finally:
+                os.chdir(previous)
+
+    def test_legacy_allowlist_is_exact_and_still_scans_content(self):
+        import json
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            git(root, 'init', '-q', '-b', 'main')
+            git(root, 'config', 'user.name', 'Fixture')
+            git(root, 'config', 'user.email', 'fixture@example.invalid')
+            (root / 'README.md').write_text('base\n')
+            git(root, 'add', 'README.md')
+            git(root, 'commit', '-qm', 'base')
+            base = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            (root / 'legitimate.md').write_text('safe\n')
+            git(root, 'add', 'legitimate.md')
+            git(root, 'commit', '-qm', 'legacy subject')
+            safe = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            (root / 'AGENTS.md').write_text('fixture\n')
+            git(root, 'add', 'AGENTS.md')
+            git(root, 'commit', '-qm', 'legacy forbidden subject')
+            bad = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            (root / 'legacy-commits.json').write_text(json.dumps({'commits': {safe: 1, bad: 1}}))
+            previous, original = os.getcwd(), policy.__file__
+            try:
+                os.chdir(root)
+                policy.__file__ = str(root / 'policy.py')
+                self.assertTrue(policy.commits(base, safe, issue='1'))
+                self.assertFalse(policy.commits(base, safe, issue='2'))
+                self.assertFalse(policy.commits(base, bad, issue='1'))
+            finally:
+                os.chdir(previous)
+                policy.__file__ = original
+
+    def test_pull_request_author_must_be_assigned(self):
+        import io
+        from unittest.mock import patch
+        sys.modules['policy'] = policy
+        pspec = importlib.util.spec_from_file_location('validate_pr', ROOT / 'scripts/validate-pr.py')
+        module = importlib.util.module_from_spec(pspec)
+        pspec.loader.exec_module(module)
+        environment = {'PR_BRANCH': 'feature/8-home', 'PR_TITLE': 'feat(home): build hero (#8)',
+                       'PR_BODY': 'Refs: #8', 'PR_AUTHOR': 'not-assigned',
+                       'REPOSITORY': 'owner/repository', 'GH_TOKEN': 'fixture'}
+        class Response(io.BytesIO):
+            def __enter__(self): return self
+            def __exit__(self, *args): self.close()
+        with patch.dict(os.environ, environment), patch.object(module.urllib.request, 'urlopen', return_value=Response(b'{"state":"open","assignees":[{"login":"assigned"}]}')):
+            with self.assertRaisesRegex(ValueError, 'not assigned'):
+                module.main()
+        environment['PR_BRANCH'] = 'invalid-branch'
+        with patch.dict(os.environ, environment):
+            with self.assertRaisesRegex(ValueError, 'Invalid branch'):
+                module.main()
+
+    def test_application_scripts_run_when_configured(self):
+        import json
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            git(root, 'init', '-q', '-b', 'main')
+            (root / 'package.json').write_text(json.dumps({'scripts': {'format:check': 'format', 'lint': 'lint', 'test': 'test', 'build': 'build'}}))
+            (root / 'package-lock.json').write_text('{}')
+            git(root, 'add', 'package.json', 'package-lock.json')
+            bindir = root / 'bin'
+            bindir.mkdir()
+            npm = bindir / 'npm'
+            npm.write_text('#!/bin/sh\nexit 0\n')
+            npm.chmod(0o755)
+            previous, path = os.getcwd(), os.environ.get('PATH', '')
+            try:
+                os.chdir(root)
+                os.environ['PATH'] = str(bindir) + os.pathsep + path
+                self.assertTrue(policy.app_checks(staged=True))
+                npm.write_text('#!/bin/sh\nexit 1\n')
+                with self.assertRaisesRegex(RuntimeError, 'Application check failed'):
+                    policy.app_checks(staged=True)
+            finally:
+                os.chdir(previous)
+                os.environ['PATH'] = path
+
+    def test_untracked_main_ref_fails_closed(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            git(root, 'init', '-q', '-b', 'main')
+            git(root, 'config', 'user.name', 'Fixture')
+            git(root, 'config', 'user.email', 'fixture@example.invalid')
+            git(root, 'remote', 'add', 'origin', 'example')
+            (root / 'README.md').write_text('base\n')
+            git(root, 'add', 'README.md')
+            git(root, 'commit', '-qm', 'fixture base')
+            head = git(root, 'rev-parse', 'HEAD').stdout.decode().strip()
+            previous = os.getcwd()
+            try:
+                os.chdir(root)
+                ref = 'refs/heads/feature/8-no-tracking'
+                with self.assertRaises(RuntimeError):
+                    policy.pre_push('origin', 'example', f'{ref} {head} {ref} ' + '0' * 40 + '\n')
             finally:
                 os.chdir(previous)
 

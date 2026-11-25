@@ -17,3 +17,9 @@ Environment: isolated macOS checkout, Python 3.9.6, Git, temporary repositories 
 | Branch protection | Apply only after independent review and merge | PENDING; no claim of remote enforcement |
 
 These checks are limited to tested patterns; no scanner guarantees detection of every secret or private transcript. CI and local hooks do not prevent a file from reaching a remote by other means. Required server controls need the approved rollout and actual workflow results.
+
+## Additional audit — 26 November 2026
+
+The current session adds tests for nested and mixed-case paths, spaces, missing remote tracking, multiple refs, mismatched issue/branch, PR author assignment and the exact-SHA legacy exception. Four legacy branch ranges were scanned locally with content checks retained. A temporary package-manager fixture verifies that configured format and lint scripts can execute, and failures remain blocking. The current local suite ran 14 tests with 14 pass, 0 fail. A first pre-push test run exposed seven fixture-isolation errors caused by inherited Git hook environment; after isolating the fixture process, the same suite passed during subsequent PR #35 and #38 pushes. Current PR #40 HEAD must be rechecked in GitHub Actions after these changes. The original DOCX and UI application are not tested by this governance suite.
+
+The proposed legacy scanner passed for #35, #37 and #38; #36 has pre-existing whitespace findings in its outgoing diff and needs cleanup after the governance integration decision. These findings do not justify disabling whitespace checks.
