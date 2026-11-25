@@ -76,3 +76,17 @@ Pemetaan berikut adalah **usulan**, bukan penggantian ID resmi SRS atau perubaha
 | [#32](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/32) | Deliverable dokumentasi dan kontribusi | Menunggu review PIC dan rekonsiliasi SRS |
 | [#33](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/33) | Deliverable pitch deck dan final acceptance | Menunggu review PIC dan rekonsiliasi SRS |
 | [#34](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/34) | Process weekly status dan koordinasi | Menunggu review PIC dan rekonsiliasi SRS |
+
+| [#39](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/issues/39) | Engineering/process requirement: governance, hooks, CI dan review | Menunggu review PR #40; bukan FR website |
+
+## PR dan evidence yang tersedia — 26 November 2026
+
+| Issue | PR terkait | Evidence / status |
+| --- | --- | --- |
+| #1 | [PR #35](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/35) | SRS dan mapping draft; menunggu validasi sumber dan review. |
+| #2 | [PR #36](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/36) | Rencana Scrum dan workflow; menunggu review. |
+| #8 | [PR #37](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/37) | Kontrak beranda; implementasi dan tes runtime terblokir. |
+| #13 | [PR #38](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/38) | Template review dan retrospective; ceremony belum berlangsung. |
+| #39 | [PR #40](https://github.com/adamyudhistiramuhtar-byte/KELOMPOK-1-UI-LANJUT/pull/40) | Governance dan hasil uji; menunggu review dan rollout. |
+
+Issue lain tetap memiliki referensi requirement/tes sesuai tabel; tidak ada bukti implementasi atau PR tambahan yang diklaim pada audit ini.

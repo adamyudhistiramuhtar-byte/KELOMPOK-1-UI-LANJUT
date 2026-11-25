@@ -23,7 +23,9 @@ Visitor -- UC06
 @enduml
 ```
 
-Diagram di atas berupa sumber PlantUML; render visual belum diverifikasi.
+![Diagram use case: satu aktor Pengunjung dan enam use case dalam batas sistem](diagrams/use-case.png)
+
+Diagram digambar dari model PlantUML di atas dan diperiksa secara visual pada 26 November 2026; isi kebutuhan tetap usulan yang menunggu rekonsiliasi SRS asli.
 
 ## UC-01 — Menjelajahi beranda
 
