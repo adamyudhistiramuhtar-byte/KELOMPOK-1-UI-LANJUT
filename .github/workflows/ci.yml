@@ -1,0 +1,23 @@
+name: Governance tests
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  governance-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - name: Report application tooling status
+        run: |
+          if [ -f package.json ]; then
+            echo 'Application exists; configure agreed formatter, lint, tests and build before enabling this check.' >&2
+            exit 1
+          fi
+          echo 'Application build, lint, formatting and tests NOT RUN: application foundation absent.'
