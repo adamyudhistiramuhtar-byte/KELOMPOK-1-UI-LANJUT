@@ -1,0 +1,24 @@
+name: Bug
+description: Catat pekerjaan bug yang dapat diperiksa
+title: "[Bug] "
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective dan requirement reference
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope dan acceptance criteria yang dapat diuji
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies dan evidence required
+  - type: input
+    id: pic
+    attributes:
+      label: PIC, priority, size, iteration dan workstream
