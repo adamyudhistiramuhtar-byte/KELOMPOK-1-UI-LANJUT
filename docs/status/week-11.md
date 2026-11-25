@@ -22,3 +22,10 @@ Keputusan, PIC dan target: belum diisi.
 - In Review: belum dihitung
 - Done: belum dihitung
 - Blocked: belum dihitung
+
+## Format tindak lanjut
+
+Date / Actual Participants: belum dikonfirmasi.  
+Progress: hanya pekerjaan yang dapat ditautkan dan dibuktikan.  
+Planning / Problems / Decisions: belum diisi.  
+Follow-up action / PIC / target / evidence link: belum diisi.

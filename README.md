@@ -38,3 +38,7 @@ Unit atau functional, integration/API failure, responsif, usability, dan aksesib
 
 ## Contribution Guidelines
 Lihat [CONTRIBUTING](CONTRIBUTING.md); seluruh anggota berkontribusi pada produk dan memperbarui issue masing-masing.
+
+## Sprint 1 coordination
+
+Perencanaan dan batasan audit dependency: [sprint plan](docs/sprint-plan.md), [dependency map](docs/dependency-map.md), [Definition of Ready](docs/definition-of-ready.md). Template review dan retrospective akan dipersiapkan terpisah. Artefak masih memerlukan review tim.

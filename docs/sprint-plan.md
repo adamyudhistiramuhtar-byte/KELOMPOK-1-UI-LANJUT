@@ -9,3 +9,15 @@
 Sprint 1 planning 23 November 2026 adalah baseline yang sudah lewat, bukan bukti pelaksanaan. Review dan retrospective 6 Desember; Sprint 2 planning 7 Desember, review dan retrospective 20 Desember; Sprint 3 planning 21 Desember, final review paling lambat 27 Desember atau sebelum jadwal presentasi aktual, retrospective akhir proyek. Jadwal presentasi aktual mengikuti dosen.
 
 Check-in diusulkan Senin, Rabu, Jumat: progress, planning, problem, decision; jam dan peserta perlu dikonfirmasi. Lakukan refinement backlog secara berkala, perbarui dependency dan kapasitas.
+
+## Planning Sprint 1 dan ceremony — usulan
+
+Audit 13 issue dan urutan dependency: [dependency map](dependency-map.md). Sprint backlog aktual dan komitmen belum dikonfirmasi. Planning baseline 23 November sudah lewat dan tidak membuktikan pelaksanaan. Usulan koordinasi dimulai Rabu 25 November 2026, kemudian setiap Senin/Rabu/Jumat selama sprint; jam, peserta dan pelaksanaan harus dikonfirmasi.
+
+- Planning: tinjau goal, kapasitas, dependency, DoR, issue dan commitment yang disepakati.
+- Check-in: progress berbukti, planning, problems, keputusan dan tindak lanjut.
+- Refinement: cek requirement, acceptance criteria, size, risiko dan dependency bersama PIC.
+- Review 6 Desember: demonstrasi increment, acceptance dan feedback aktual.
+- Retrospective 6 Desember: apa yang baik, yang sulit, perbaikan dan action ber-PIC.
+
+Tidak ada kehadiran, diskusi atau persetujuan yang diasumsikan.
