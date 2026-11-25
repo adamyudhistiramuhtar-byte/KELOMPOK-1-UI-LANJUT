@@ -8,3 +8,6 @@
 | R-04 | Fondasi desain dan komponen belum siap | Beranda terblokir | Review gate #5/#6/#7 dan kontrak #8 | Sindi/Alexius | Terbuka |
 | R-05 | Kapasitas dan dependency tidak seimbang | Sprint terlambat | Refinement dan cek kapasitas | Adam | Terbuka |
 | R-06 | Jadwal presentasi belum diketahui | Acceptance dan demo terlambat | Konfirmasi dosen | Adam | Terbuka |
+
+| R-07 | Project privat dan hak tiap anggota belum diverifikasi melalui API | Anggota mungkin tidak dapat memperbarui board | Verifikasi Project settings → Manage access, pertahankan akses yang ada | Adam | Terbuka |
+| R-08 | Workflow auto-close dan PR merged aktif namun detail aturan belum terbaca API | Done/penutupan dapat mendahului DoD | Periksa Project Workflows tanpa mengaktifkan aturan baru | Adam | Terbuka |
