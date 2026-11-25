@@ -1,8 +1,9 @@
-# User flow — Draft
+# User flow dan sitemap — DRAFT
 
-1. Beranda → Tim → profil individu → kembali ke Tim.
-2. Beranda → Proyek → cari/filter → detail proyek → profil kontributor atau kembali ke Proyek.
-3. Navigasi → Kontak → tautan profesional yang telah disetujui.
-4. Pengambilan data: loading → data/empty/error → retry bila gagal.
+```text
+/ Beranda → /team → /team/:id → /team
+          → /projects → /projects/:id → /team/:id atau /projects
+Navigasi → /contact → tautan profesional yang disetujui
+```
 
-Setiap jalur harus dapat digunakan dengan keyboard dan pointer; validasi melalui pengujian aktual.
+Pencarian dan filter dilakukan di `/projects`. Request data: loading → hasil / empty / error; dari error pengunjung dapat retry. Jika proyek unggulan belum tersedia, tidak ada tautan fiktif. Ini adalah alur sistem usulan, bukan proses AS-IS yang telah diobservasi. Detail: [use case](use-case.md).
